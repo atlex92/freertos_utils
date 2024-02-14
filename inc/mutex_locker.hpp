@@ -1,6 +1,5 @@
-#ifndef static_mutex.hpp
-#define static_mutex.hpp
-
+#ifndef FREERTOS_UTILS_MUTEX_LOCKER_HPP_
+#define FREERTOS_UTILS_MUTEX_LOCKER_HPP_
 #include <assert.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/semphr.h>
@@ -20,7 +19,7 @@ public:
      * 
      * @param mutex mutex refference to work with
      */
-    explicit MutexLocker(StaticMutex &mutex) : mutex_ref_{mutex} {
+    explicit MutexLocker(Mutex &mutex) : mutex_ref_{mutex} {
         mutex_ref_.lock();
     }
 
@@ -37,8 +36,8 @@ private:
      * @brief StaticMutex object refference
      * 
      */
-    StaticMutex& mutex_ref_;
+    Mutex& mutex_ref_;
 };
 
 
-#endif // static_mutex.hpp
+#endif // FREERTOS_UTILS_MUTEX_LOCKER_HPP_

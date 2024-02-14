@@ -43,7 +43,7 @@ void Task::start(void* taskData) {
 			Safe updating is_running_ flag, context switches are excluded for a while
 		*/
 		InterruptLocker lock;
-		assert(pdPASS == ::xTaskCreatePinnedToCore(&runTask, task_name_.c_str(), stack_size_, this, priority_, &task_descr_, core_id_));
+		assert(pdPASS == ::xTaskCreate(&runTask, task_name_.c_str(), stack_size_, this, priority_, &task_descr_));
 		is_running_ = true;
 	}
 }

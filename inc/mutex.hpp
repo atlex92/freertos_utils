@@ -1,5 +1,5 @@
-#ifndef FREERTOS_UTILS_STATIC_MUTEX_HPP_
-#define FREERTOS_UTILS_STATIC_MUTEX_HPP_
+#ifndef FREERTOS_UTILS_MUTEX_HPP_
+#define FREERTOS_UTILS_MUTEX_HPP_
 
 #include <assert.h>
 #include "freertos/FreeRTOS.h"
@@ -7,18 +7,18 @@
 #include "config.h"
 
 /**
- * @class StaticMutex
+ * @class Mutex
  * 
  * @brief C++ wrapper for binary mutex operations
  * 
  */
-class StaticMutex {
+class Mutex {
 public:
     /**
-     * @brief Construct a new StaticMutex object
+     * @brief Construct a new Mutex object
      * 
      */
-    StaticMutex() : handle_{xSemaphoreCreateRecursiveMutexStatic(&static_internal_data_)} {
+    Mutex() : handle_{xSemaphoreCreateRecursiveMutex()} {
         assert(handle_ != nullptr);
     }
 
@@ -74,16 +74,9 @@ private:
      * 
      */
     SemaphoreHandle_t handle_{nullptr};
-
-    /**
-     * @brief internal data storage
-     * 
-     */
-    StaticSemaphore_t static_internal_data_{};
-
-    StaticMutex(const StaticMutex &) = delete;
-    StaticMutex(StaticMutex &&) = delete;
-    StaticMutex &operator=(const StaticMutex &) = delete;
+    Mutex(const Mutex &) = delete;
+    Mutex(Mutex &&) = delete;
+    Mutex &operator=(const Mutex &) = delete;
 };
 
-#endif // FREERTOS_UTILS_STATIC_MUTEX_HPP_
+#endif // FREERTOS_UTILS_MUTEX_HPP_
