@@ -4,7 +4,7 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/semphr.h>
 #include "config.h"
-#include "static_mutex.hpp"
+#include "mutex.hpp"
 
 /**
  * @class MutexLocker
