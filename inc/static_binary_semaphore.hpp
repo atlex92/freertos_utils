@@ -7,18 +7,18 @@
 #include "config.h"
 
 /**
- * @class StaticBinarySemaphore
+ * @class BinarySemaphore
  * 
  * @brief C++ wrapper for binary semaphore operations
  * 
  */
-class StaticBinarySemaphore {
+class BinarySemaphore {
 public:
     /**
-     * @brief Construct a new StaticBinarySemaphore object
+     * @brief Construct a new BinarySemaphore object
      * 
      */
-    StaticBinarySemaphore() :handle_{xSemaphoreCreateBinaryStatic(&static_internal_data_)} {
+    BinarySemaphore() :handle_{xSemaphoreCreateBinary()} {
         assert(handle_ != nullptr);
     }
 
@@ -29,7 +29,7 @@ public:
      * @return true if the semaphore was taken, othewise false
      */
     bool tryTake(const TickType_t delay) {
-        assert(IS_IN_ISR());
+        assert(!IS_IN_ISR());
         return (xSemaphoreTake(handle_, delay) != pdFALSE);
     }
 
@@ -79,11 +79,10 @@ private:
      * @brief Internal data storage
      * 
      */
-    StaticSemaphore_t static_internal_data_{};
 
-    StaticBinarySemaphore(const StaticBinarySemaphore &) = delete;
-    StaticBinarySemaphore(StaticBinarySemaphore &&) = delete;
-    StaticBinarySemaphore &operator=(const StaticBinarySemaphore &) = delete;
+    BinarySemaphore(const BinarySemaphore &) = delete;
+    BinarySemaphore(BinarySemaphore &&) = delete;
+    BinarySemaphore &operator=(const BinarySemaphore &) = delete;
 
     /**
      * @brief Release a semaphore handle_. This function can be called from any context.
