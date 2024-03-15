@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
+#include "config.h"
 
 /**
  * @brief Template C++ wrapper for static queue operations
@@ -12,13 +13,13 @@
  * @tparam length queue length
  */
 template <typename T, size_t length>
-class StaticQueue {
+class Queue {
 public:
     /**
      * @brief Construct a new Static Queue object
      * 
      */
-    StaticQueue() : queue_handle_{xQueueCreateStatic(length, sizeof(T), queue_storage_, &queue_buffer_)} {
+    Queue() : queue_handle_{xQueueCreate(length, sizeof(T))} {
         assert(NULL != queue_handle_);
     }
 
@@ -95,7 +96,7 @@ public:
      * @brief Destroy the Static Queue object
      * 
      */
-    ~StaticQueue() {
+    ~Queue() {
         if (queue_handle_) {
             vQueueDelete(queue_handle_);
         }
@@ -106,18 +107,6 @@ public:
     }
 
 private:
-    /**
-     * @brief Internal data storage
-     * 
-     */
-    StaticQueue_t queue_buffer_{};
-
-    /**
-     * @brief Messages storage
-     * 
-     */
-    uint8_t queue_storage_[length * sizeof(T)]{};
-
     /**
      * @brief Static queue handler
      * 

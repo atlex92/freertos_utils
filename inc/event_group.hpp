@@ -1,24 +1,22 @@
-#ifndef FREERTOS_UTILS_STATIC_EVENT_GROUP_HPP_
-#define FREERTOS_UTILS_STATIC_EVENT_GROUP_HPP_
-
+#pragma once
 #include <assert.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/event_groups.h>
 #include "config.h"
 
 /**
- * @class StaticEventGroup
+ * @class EventGroup
  * 
- * @brief C++ wrapper for static event group operations
+ * @brief C++ wrapper for event group operations
  * 
  */
-class StaticEventGroup {
+class EventGroup {
 public:
     /**
-     * @brief Construct a new StaticEventGroup object
+     * @brief Construct a new EventGroup object
      * 
      */
-    StaticEventGroup() : handle_{xEventGroupCreateStatic(&static_internal_data_)} {
+    EventGroup() : handle_{xEventGroupCreate()} {
         assert(nullptr != handle_);
     }
 
@@ -123,12 +121,4 @@ private:
      * 
      */
     EventGroupHandle_t handle_{nullptr};
-
-    /**
-     * @brief internal data storage object
-     * 
-     */
-    StaticEventGroup_t static_internal_data_{};
 };
-
-#endif // FREERTOS_UTILS_STATIC_EVENT_GROUP_HPP_

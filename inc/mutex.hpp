@@ -6,6 +6,7 @@
 #include "freertos/semphr.h"
 #include "config.h"
 
+
 /**
  * @class Mutex
  * 
@@ -18,9 +19,16 @@ public:
      * @brief Construct a new Mutex object
      * 
      */
-    Mutex() : handle_{xSemaphoreCreateRecursiveMutex()} {
-        assert(handle_ != nullptr);
+    explicit Mutex() : handle_{xSemaphoreCreateRecursiveMutex()} {
+        assert(handle_);
     }
+
+    ~Mutex() {
+    }
+
+    Mutex(const Mutex &) = delete;
+    Mutex(Mutex &&) = delete;
+    Mutex(Mutex &) = delete;
 
     /**
      * @brief Try to lock the mutex with specified timeout
@@ -28,7 +36,7 @@ public:
      * @param delay timeout in ticks
      * @return true if the mutex was locked, otherwise false
      */
-    bool tryLock(TickType_t delay) {
+    bool tryLock(const TickType_t delay) {
         assert(!IS_IN_ISR());
         return (xSemaphoreTakeRecursive(handle_, delay) != pdFALSE);
     }
@@ -73,9 +81,7 @@ private:
      * @brief raw mutex handler @see SemaphoreHandle_t
      * 
      */
-    SemaphoreHandle_t handle_{nullptr};
-    Mutex(const Mutex &) = delete;
-    Mutex(Mutex &&) = delete;
+    const SemaphoreHandle_t handle_;
     Mutex &operator=(const Mutex &) = delete;
 };
 

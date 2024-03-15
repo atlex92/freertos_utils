@@ -13,7 +13,7 @@
  * @brief C++ wrapper for static task operations
  * 
  */
-
+#pragma pack(1)
 class Task {
 public:
 	/**
