@@ -84,6 +84,13 @@ public:
     }
 
     /**
+     * Reset a queue back to its original empty state
+    */
+    void reset() {
+        xQueueReset(queue_handle_);
+    }
+
+    /**
      * @brief Get number of available spaces in the queue for new messages
      *
      * @return number of available spaces in the queue for new messages
