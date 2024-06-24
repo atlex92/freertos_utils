@@ -1,5 +1,5 @@
-#ifndef FREERTOS_UTILS_MUTEX_LOCKER_HPP_
-#define FREERTOS_UTILS_MUTEX_LOCKER_HPP_
+#pragma once
+
 #include <assert.h>
 #include <freertos/FreeRTOS.h>
 #include <freertos/semphr.h>
@@ -33,11 +33,8 @@ public:
 
 private:
     /**
-     * @brief StaticMutex object refference
+     * @brief Mutex object refference
      * 
      */
     Mutex& mutex_ref_;
 };
-
-
-#endif // FREERTOS_UTILS_MUTEX_LOCKER_HPP_

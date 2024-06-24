@@ -1,5 +1,4 @@
-#ifndef FREERTOS_UTILS_STATIC_BINARY_SEMAPHORE_HPP_
-#define FREERTOS_UTILS_STATIC_BINARY_SEMAPHORE_HPP_
+#pragma once
 
 #include <assert.h>
 #include "freertos/FreeRTOS.h"
@@ -25,12 +24,12 @@ public:
     /**
      * @brief Try to take the semaphore with specified timeout
      * 
-     * @param delay maximum timeout specified in ticks
+     * @param delay maximum timeout specified in ms
      * @return true if the semaphore was taken, othewise false
      */
-    bool tryTake(const TickType_t delay) {
+    bool tryTake(const uint32_t delay_ms) {
         assert(!IS_IN_ISR());
-        return (xSemaphoreTake(handle_, delay) != pdFALSE);
+        return (xSemaphoreTake(handle_, pdMS_TO_TICKS(delay_ms)) != pdFALSE);
     }
 
     /**
@@ -75,11 +74,6 @@ private:
      */
     SemaphoreHandle_t handle_{nullptr};
 
-    /**
-     * @brief Internal data storage
-     * 
-     */
-
     BinarySemaphore(const BinarySemaphore &) = delete;
     BinarySemaphore(BinarySemaphore &&) = delete;
     BinarySemaphore &operator=(const BinarySemaphore &) = delete;
@@ -101,5 +95,3 @@ private:
         return result;
     }
 };
-
-#endif  // FREERTOS_UTILS_STATIC_BINARY_SEMAPHORE_HPP_

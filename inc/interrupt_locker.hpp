@@ -1,5 +1,4 @@
-#ifndef FREERTOS_UTILS_INTERRUPT_LOCKER_HPP_
-#define FREERTOS_UTILS_INTERRUPT_LOCKER_HPP_
+#pragma once
 
 #include <freertos/FreeRTOS.h>
 
@@ -33,5 +32,3 @@ private:
      */
     portMUX_TYPE time_critical_mutex_;
 };
-
-#endif // FREERTOS_UTILS_INTERRUPT_LOCKER_HPP_

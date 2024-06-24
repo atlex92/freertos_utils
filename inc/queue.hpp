@@ -1,5 +1,4 @@
-#ifndef FREERTOS_UTILS_STATIC_QUEUE_H_
-#define FREERTOS_UTILS_STATIC_QUEUE_H_
+#pragma once
 
 #include <stdint.h>
 #include "freertos/FreeRTOS.h"
@@ -27,13 +26,13 @@ public:
      * @brief Add a message at the end of the queue
      *
      * @param msg message object
-     * @param timeout max ticks to wait for
+     * @param timeout max ms to wait for
      * @return true if the message was enqueued
      * @return false otherwise
      */
-    bool enqueueBack(const T &msg, const TickType_t timeout = 0u) {
+    bool enqueueBack(const T &msg, const uint32_t timeout_ms = 0u) {
         return pdTRUE == (IS_IN_ISR() ? xQueueSendToBackFromISR(queue_handle_, &msg, NULL)
-                                        : xQueueSendToBack(queue_handle_, &msg, timeout));
+                                        : xQueueSendToBack(queue_handle_, &msg, pdMS_TO_TICKS(timeout_ms)));
     }
 
     /**
@@ -44,9 +43,9 @@ public:
      * @return true if the message was enqueued
      * @return false otherwise
      */
-    bool enqueueFront(const T &msg, const TickType_t timeout = 0u) {
+    bool enqueueFront(const T &msg, const uint32_t timeout_ms = 0u) {
         return pdTRUE == (IS_IN_ISR() ? xQueueSendToFrontFromISR(queue_handle_, &msg, NULL)
-                                        : xQueueSendToFront(queue_handle_, &msg, timeout));
+                                        : xQueueSendToFront(queue_handle_, &msg, pdMS_TO_TICKS(timeout_ms)));
     }
 
     /**
@@ -57,9 +56,9 @@ public:
      * @return true if read operation was successfull
      * @return false otherwise
      */
-    bool peek(T &out, const TickType_t timeout = 0) {
+    bool peek(T &out, const uint32_t timeout_ms = 0) {
         return pdTRUE ==
-               (IS_IN_ISR() ? xQueuePeekFromISR(queue_handle_, &out) : xQueuePeek(queue_handle_, &out, timeout));
+               (IS_IN_ISR() ? xQueuePeekFromISR(queue_handle_, &out) : xQueuePeek(queue_handle_, &out, pdMS_TO_TICKS(timeout_ms)));
     }
 
     /**
@@ -70,8 +69,8 @@ public:
      * @return true if read operation was successfull
      * @return false otherwise
      */
-    bool receive(T &out, const TickType_t timeout = 0) {
-        return pdTRUE == (IS_IN_ISR() ? xQueueReceiveFromISR(queue_handle_, &out, NULL) : xQueueReceive(queue_handle_, &out, timeout));
+    bool receive(T &out, const uint32_t timeout_ms = 0) {
+        return pdTRUE == (IS_IN_ISR() ? xQueueReceiveFromISR(queue_handle_, &out, NULL) : xQueueReceive(queue_handle_, &out, pdMS_TO_TICKS(timeout_ms)));
     }
 
     /**
@@ -109,6 +108,11 @@ public:
         }
     }
 
+    /**
+     * @brief Get the raw queue handler @see QueueHandle_t
+     * 
+     * @return QueueHandle_t raw queue handler
+     */
     QueueHandle_t raw() const {
         return queue_handle_;
     }
@@ -120,5 +124,3 @@ private:
      */
     QueueHandle_t queue_handle_{NULL};
 };
-
-#endif  // FREERTOS_UTILS_STATIC_QUEUE_H_

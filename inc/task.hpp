@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef FREERTOS_UTILS_TASK_HPP_
-#define FREERTOS_UTILS_TASK_HPP_
-
 #include <freertos/FreeRTOS.h>
 #include <freertos/semphr.h>
 #include <string>
@@ -141,5 +138,3 @@ private:
 	 */
 	BaseType_t core_id_{};
 };
-
-#endif // FREERTOS_UTILS_TASK_HPP_

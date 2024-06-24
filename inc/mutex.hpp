@@ -1,11 +1,9 @@
-#ifndef FREERTOS_UTILS_MUTEX_HPP_
-#define FREERTOS_UTILS_MUTEX_HPP_
+#pragma once
 
 #include <assert.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/semphr.h"
 #include "config.h"
-
 
 /**
  * @class Mutex
@@ -67,12 +65,12 @@ public:
         assert(tryUnlock());
     }
 
+    SemaphoreHandle_t raw() const {
     /**
      * @brief Get the raw mutex handler @see SemaphoreHandle_t
      * 
      * @return SemaphoreHandle_t raw mutex handler
      */
-    SemaphoreHandle_t raw() const {
         return handle_;
     }
 
@@ -84,5 +82,3 @@ private:
     const SemaphoreHandle_t handle_;
     Mutex &operator=(const Mutex &) = delete;
 };
-
-#endif // FREERTOS_UTILS_MUTEX_HPP_
